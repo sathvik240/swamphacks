@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>PlanIT Control</title>
+  <meta name="theme-color" content="#0f1720">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">⚡</span> PlanIT <b>Control</b></div>
+    <div class="stats" id="stats"></div>
+    <nav class="tabs">
+      <button class="tab active" data-view="dashboard">Dashboard</button>
+      <button class="tab" data-view="briefings">Briefings</button>
+      <button class="tab" data-view="reports">Hazard DB</button>
+    </nav>
+    <span class="conn" id="conn" title="Live connection">●</span>
+  </header>
+
+  <main id="view-dashboard" class="view active">
+    <aside class="ranking">
+      <div class="ranking-head">
+        <h2>Sites by risk</h2>
+        <input id="search" type="search" placeholder="Filter sites…" aria-label="Filter sites">
+      </div>
+      <ol id="site-list"></ol>
+    </aside>
+    <section class="map-wrap">
+      <div id="map"></div>
+      <div class="legend">
+        <span><i class="dot low"></i>Low</span><span><i class="dot moderate"></i>Moderate</span>
+        <span><i class="dot elevated"></i>Elevated</span><span><i class="dot high"></i>High</span>
+        <span><i class="dot extreme"></i>Extreme</span>
+      </div>
+      <button id="report-btn" class="fab">＋ Report hazard</button>
+    </section>
+    <aside id="detail" class="detail hidden" aria-live="polite"></aside>
+  </main>
+
+  <main id="view-briefings" class="view page">
+    <div class="page-head">
+      <h2>Next-day safety briefings</h2>
+      <p class="muted">Sent automatically at 6:00 PM site-local time for every site.</p>
+    </div>
+    <div id="briefing-list" class="cards"></div>
+  </main>
+
+  <main id="view-reports" class="view page">
+    <div class="page-head">
+      <h2>Location hazard database</h2>
+      <p class="muted">Every crew report is kept by location so future projects can see what crews ran into.</p>
+    </div>
+    <div id="report-list" class="cards"></div>
+  </main>
+
+  <div id="toasts" class="toasts" aria-live="assertive"></div>
+
+  <dialog id="report-dialog">
+    <form id="report-form" method="dialog">
+      <h3>Report a hazard</h3>
+      <p class="muted small" id="pin-hint">Tap the map to pin the location, or use your GPS.</p>
+      <div class="row">
+        <label>Lat <input name="lat" type="number" step="any" required></label>
+        <label>Lon <input name="lon" type="number" step="any" required></label>
+        <button type="button" id="gps-btn" class="ghost">📍 GPS</button>
+      </div>
+      <label>Type <select name="hazard_type" id="hazard-type" required></select></label>
+      <label>Severity <input name="severity" type="range" min="1" max="5" value="3" id="sev"><output id="sev-out">3</output></label>
+      <label>What did you see? <textarea name="description" rows="2" maxlength="500" placeholder="e.g. 8 ft gator by the culvert at the east gate"></textarea></label>
+      <label>Photo <input name="photo" type="file" accept="image/*" capture="environment"></label>
+      <label>Your name <input name="reporter" maxlength="80" autocomplete="name"></label>
+      <input type="hidden" name="site_id">
+      <div class="actions">
+        <button type="button" id="report-cancel" class="ghost">Cancel</button>
+        <button type="submit" id="report-submit">Share with crew</button>
+      </div>
+      <p id="report-error" class="error"></p>
+    </form>
+  </dialog>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

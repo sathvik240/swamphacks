@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+data/planit.db*
+data/uploads/
+data/hazard_model.joblib
+data/raw/
+data/training.csv
